@@ -15,7 +15,7 @@ public class Hooks {
     private final ScenarioState scenarioState;
     private final DataStore dataStore;
 
-    // ✅ PicoContainer will inject these
+    //  PicoContainer will inject these
     public Hooks(ApiContext apiContext,
                  ScenarioState scenarioState,
                  DataStore dataStore) {
@@ -50,6 +50,6 @@ public class Hooks {
         scenarioState.reset();
         dataStore.clear();
 
-        System.out.println("✅ Finished Scenario: " + scenario.getName());
+        System.out.println("Finished Scenario: " + scenario.getName());
     }
 }

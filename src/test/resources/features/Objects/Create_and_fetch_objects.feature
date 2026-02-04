@@ -3,7 +3,6 @@ Feature: Object Management API
   and validating the response data and status codes.
 
   Background:
-    # This runs before each scenario
     Given a valid object creation payload
 
   Scenario: Create a new object successfully

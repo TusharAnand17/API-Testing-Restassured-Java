@@ -3,7 +3,6 @@ Feature: Schema Validation
 
 
   Background:
-    # This runs before each scenario
     Given a valid object creation payload
 
   Scenario: The response should match the JSON schema

@@ -2,55 +2,15 @@ package org.example.api.clients;
 
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
-import org.example.api.auth.AuthFactory;
-import org.example.api.auth.AuthStrategy;
 import org.example.api.spec.RequestSpecBuilderUtil;
 
 import java.util.Map;
 
 public abstract class BaseApiClient {
-//    protected RequestSpecification request;
-//
-//    protected BaseApiClient(){
-//        this.request = RequestSpecBuilderUtil.getBaseSpec();
-//    }
-//
-//    protected void addHeaders(Map<String,String> headers){
-//        if(headers != null && !headers.isEmpty()){
-//            request.headers(headers);
-//        }
-//    }
-//
-//    protected void addQueryParams(Map<String,Object> queryParams){
-//        if(queryParams != null && !queryParams.isEmpty()){
-//            request.queryParams(queryParams);
-//        }
-//    }
-//
-//    protected void setBody(Object body){
-//        if(body != null){
-//            request.body(body);
-//        }
-//    }
-//
-//    protected Response get(String endpoint){
-//        return request.when().get(endpoint);
-//    }
-//
-//    protected Response post(String endpoint){
-//        return request.when().post(endpoint);
-//    }
-//
-//    protected Response put(String endpoint){
-//        return request.when().put(endpoint);
-//    }
-//
-//    protected Response delete(String endpoint){
-//        return request.when().delete(endpoint);
-//    }
-
     private final String baseUrlKey;
     private String token;
+    private String username;
+    private String password;
 
     protected BaseApiClient(String baseUrlKey){
         this.baseUrlKey = baseUrlKey;
@@ -60,12 +20,23 @@ public abstract class BaseApiClient {
         this.token = token;
     }
 
+    public void setBasicAuth(String username,String password){
+        this.username = username;
+        this.password = password;
+    }
+
     private RequestSpecification newRequest(boolean requireAuth) {
         RequestSpecification request = RequestSpecBuilderUtil.getBaseSpec(baseUrlKey);
 
+//        if require token
         if(requireAuth && token != null && !token.isBlank()){
-            AuthStrategy strategy = AuthFactory.getStrategy();
-            strategy.applyAuth(request, token);
+//            AuthStrategy strategy = AuthFactory.getStrategy();
+//            strategy.applyAuth(request, token);
+            request.header("Cokkie","token=" + token);
+        }
+
+        if (requireAuth && username != null && password != null){
+            request.auth().preemptive().basic(username,password);
         }
         return request;
     }
@@ -101,7 +72,10 @@ public abstract class BaseApiClient {
         return request.when().put(endpoint);
     }
 
-    protected Response delete(String endpoint,boolean requireAuth) {
-        return newRequest(requireAuth).when().delete(endpoint);
+    protected Response delete(String endpoint,Map<String, String> headers, Map<String, Object> queryParams, Map<String, Object> pathParams, boolean requireAuth) {
+        RequestSpecification request = newRequest(requireAuth);
+        if(headers != null && !headers.isEmpty()) request.headers(headers);
+        if(queryParams != null && !queryParams.isEmpty()) request.queryParams(queryParams);
+        return request.when().delete(endpoint);
     }
 }

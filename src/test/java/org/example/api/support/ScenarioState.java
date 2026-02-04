@@ -43,10 +43,6 @@ public class ScenarioState {
         this.bookingDetails = response;
     }
 
-    /**
-     * Unified accessor: always returns a BookingResponse
-     * regardless of whether it came from creation or retrieval.
-     */
     public BookingResponse getCurrentBooking() {
         if (createBookingResponse != null) {
             return createBookingResponse.getBooking();
@@ -54,11 +50,9 @@ public class ScenarioState {
         return bookingDetails;
     }
 
-    // ---------- Auth ----------
     public String getAuthToken() { return authToken; }
     public void setAuthToken(String authToken) { this.authToken = authToken; }
 
-    // ---------- Utility ----------
     public void reset() {
         objectId = null;
         objectName = null;

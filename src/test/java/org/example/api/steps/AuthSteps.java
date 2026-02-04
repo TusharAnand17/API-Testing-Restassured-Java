@@ -7,8 +7,11 @@ import io.cucumber.java.it.Data;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import org.example.api.clients.AuthClient;
+import org.example.api.clients.BookingClient;
 import org.example.api.config.ConfigManager;
 import org.example.api.constants.ApiEndpoints;
+import org.example.api.model.request.CreateBookingDates;
+import org.example.api.model.request.CreateBookingRequest;
 import org.example.api.model.request.CreateTokenRequest;
 import org.example.api.model.response.TokenResponse;
 import org.example.api.spec.RequestSpecBuilderUtil;
@@ -22,8 +25,10 @@ public class AuthSteps {
     private final ApiContext apiContext;
     private final AuthClient authClient;
     private final DataStore dataStore;
+    private final BookingClient bookingClient;
 
-    public AuthSteps(ApiContext apiContext, DataStore dataStore, AuthClient authClient) {
+    public AuthSteps(ApiContext apiContext, DataStore dataStore, AuthClient authClient, BookingClient bookingClient) {
+        this.bookingClient = bookingClient;
         this.apiContext = apiContext;
         this.authClient = authClient;
         this.dataStore = dataStore;
@@ -45,8 +50,11 @@ public class AuthSteps {
         apiContext.setResponse(response);
 
         TokenResponse tokenResponse = response.as(TokenResponse.class);
+        String token = tokenResponse.getToken();
 
         dataStore.put(DataStoreKeyEnum.AUTH_TOKEN, tokenResponse.getToken());
+
+        bookingClient.setToken(token);
     }
 
     @Then("a valid token should be generated")
@@ -56,6 +64,11 @@ public class AuthSteps {
                 .as("Auth token should not be null or empty")
                 .isNotNull()
                 .isNotEmpty();
+        System.out.println(token);
+    }
+    @Given("valid admin credentials for basic authentication")
+    public void valid_admin_credentials_for_basic_authentication() {
+        bookingClient.setBasicAuth( ConfigManager.INSTANCE.get("auth.username"), ConfigManager.INSTANCE.get("auth.password") );
     }
 
 }

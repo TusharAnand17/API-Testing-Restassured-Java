@@ -27,4 +27,9 @@ public class BookingClient extends BaseApiClient{
     public Response updateBooking(int bookingId, CreateBookingRequest request){
         return put(ApiEndpoints.UPDATE_BOOKING, request, null, null,Map.of("id",bookingId),true);
     }
+
+    public Response deleteBooking(int bookingId){
+        String endpoint = ApiEndpoints.DELETE_BOOKING.replace("{id}",String.valueOf(bookingId));
+        return delete(endpoint,null,null,null,true);
+    }
 }

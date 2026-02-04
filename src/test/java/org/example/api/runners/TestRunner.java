@@ -6,7 +6,7 @@ import io.cucumber.junit.CucumberOptions;
 
 @RunWith(Cucumber.class)
 @CucumberOptions(
-        features = "src/test/resources/features/Booking/Update_booking_details.feature",   // path to feature files
+        features = "src/test/resources/features/Booking/Delete_booking.feature",   // path to feature files
         glue = "org.example.api.steps",             // where step definitions live
         plugin = {
                 "pretty",

@@ -24,21 +24,3 @@ public class RequestSpecBuilderUtil {
         return spec;
     }
 }
-
-//        RequestSpecBuilder builder = new RequestSpecBuilder()
-//                .setBaseUri(ConfigManager.INSTANCE.get("base.url"))
-//                .setContentType(ContentType.JSON)
-//                .setAccept(ContentType.JSON)
-//                .setConfig(RestAssuredConfig.config()
-//                        .objectMapperConfig(ObjectMapperConfig.objectMapperConfig()
-//                                .jackson2ObjectMapperFactory((cls, charset) -> ObjectMapperFactory.get())
-//                        ));
-
-//        RequestSpecification spec = builder.build();
-//
-//        AuthStrategy authStrategy = AuthFactory.getStrategy();
-//        authStrategy.applyAuth(spec);
-//
-//        spec.log().ifValidationFails(LogDetail.ALL);
-//
-//        return spec;

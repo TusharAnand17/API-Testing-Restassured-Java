@@ -1,11 +1,8 @@
 package org.example.api.auth;
 
-import io.restassured.RestAssured;
-import io.restassured.http.ContentType;
-import io.restassured.specification.RequestSpecification;
-import org.example.api.config.ConfigManager;
 
-import java.util.Map;
+import io.restassured.specification.RequestSpecification;
+
 
 public class BearerTokenStrategy implements AuthStrategy{
 
@@ -18,19 +15,4 @@ public class BearerTokenStrategy implements AuthStrategy{
         }
         requestSpecification.header("Authorization", "Bearer " + token);
     }
-
-//    private String generateToken(){
-//        return RestAssured.given()
-//                .baseUri(ConfigManager.INSTANCE.get("auth.baseUri"))
-//                .contentType(ContentType.JSON)
-//                .body(Map.of(
-//                        "username",ConfigManager.INSTANCE.get("auth.username"),
-//                        "password",ConfigManager.INSTANCE.get("auth.password")
-//                ))
-//                .post(ConfigManager.INSTANCE.get("auth.Endpoint"))
-//                .then()
-//                .statusCode(200)
-//                .extract()
-//                .path("token");
-//    }
 }

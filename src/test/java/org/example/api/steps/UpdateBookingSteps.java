@@ -12,9 +12,6 @@ import org.example.api.support.ApiContext;
 import org.example.api.support.DataStore;
 import org.example.api.support.DataStoreKeyEnum;
 import org.example.api.support.ScenarioState;
-
-import java.util.ResourceBundle;
-
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class UpdateBookingSteps {
@@ -48,45 +45,29 @@ public class UpdateBookingSteps {
     public void i_update_the_booking(String firstname, String lastname, Integer totalprice, String depositpaid, String checkin, String checkout, String additionalneeds) {
         boolean depositPaidBool = Boolean.parseBoolean(depositpaid);
 
-        // Build booking dates
-        CreateBookingDates bookingDates = CreateBookingDates.builder()
-                .checkin(checkin)
-                .checkout(checkout)
-                .build();
+            CreateBookingDates bookingDates = CreateBookingDates.builder()
+                    .checkin(checkin)
+                    .checkout(checkout)
+                    .build();
 
-        // Build booking request dynamically
-        CreateBookingRequest request = CreateBookingRequest.builder()
-                .firstname(firstname)
-                .lastname(lastname)
-                .totalprice(totalprice)
-                .depositpaid(depositPaidBool)
-                .bookingDates(bookingDates)
-                .additionalneeds(additionalneeds)
-                .build();
+            CreateBookingRequest request = CreateBookingRequest.builder()
+                    .firstname(firstname)
+                    .lastname(lastname)
+                    .totalprice(totalprice)
+                    .depositpaid(depositPaidBool)
+                    .bookingDates(bookingDates)
+                    .additionalneeds(additionalneeds)
+                    .build();
 
-        // Store request in ApiContext for later use
-//        apiContext.setRequestBody(request);
-
-        int bookingId = dataStore.get(DataStoreKeyEnum.BOOKING_ID, Integer.class);
-
-        Response response = bookingClient.updateBooking(bookingId, request);
-        apiContext.setResponse(response);
-
-        System.out.println("Status: " + response.getStatusCode());
-        System.out.println("Content-Type: " + response.getContentType());
-        System.out.println("Body: " + response.getBody().asString());
-
-        if (response.getContentType().contains("application/json")) {
-            BookingResponse bookingResponse = response.as(BookingResponse.class);
-            scenarioState.setBookingDetails(bookingResponse);
-        }
-        else {
-            throw new IllegalStateException("Unexpected response: " + response.getBody().asString());
-        }
+            int bookingId = dataStore.get(DataStoreKeyEnum.BOOKING_ID, Integer.class);
+            Response response = bookingClient.updateBooking(bookingId, request);
+            apiContext.setResponse(response);
+            assertThat(response.getStatusCode()).as("Booking update should return 200 OK").isEqualTo(200);
     }
 
     @Then("the booking should be updated successfully")
     public void the_booking_should_be_updated_successfully() {
         Response response = apiContext.getResponse(); assertThat(response.getStatusCode()) .as("Booking update should return 200 OK") .isEqualTo(200);
+        System.out.println(response.asString());
     }
 }

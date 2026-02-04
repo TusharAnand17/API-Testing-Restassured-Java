@@ -13,4 +13,5 @@ public final class ApiEndpoints {
     public static final String GET_BOOKING_IDS = "/booking";
     public static final String GET_BOOKING_BY_ID = "/booking/{id}";
     public static final String UPDATE_BOOKING = "/booking/{id}";
+    public static final String DELETE_BOOKING = "/booking/{id}";
 }

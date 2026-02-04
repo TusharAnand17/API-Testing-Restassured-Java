@@ -15,9 +15,6 @@ public final class ObjectMapperFactory {
 
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,false);
         mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-
-//        mapper.setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
-
         return mapper;
     }
 
